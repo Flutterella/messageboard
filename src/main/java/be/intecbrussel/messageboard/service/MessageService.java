@@ -9,5 +9,7 @@ public interface MessageService {
 
     public List<Message> getAllMessages() throws NoMessageFoundException;
 
+    public List<Message> getAllMessagesWithOffset(int offset) throws NoMessageFoundException;
+
     public void addMessage(MessageForm messageForm);
 }

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ public class BoardController {
     MessageService messageService;
 
     @GetMapping("/board")
-    public String board(Model model) {
+    public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model) {
         List<Message> messages;
+        int intOffset = Integer.parseInt(offset);
         try {
-            messages = messageService.getAllMessages();
-            Collections.reverse(messages);
+            messages = messageService.getAllMessagesWithOffset(intOffset);
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
             return "board";
