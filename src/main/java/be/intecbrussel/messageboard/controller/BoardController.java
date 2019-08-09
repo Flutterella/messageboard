@@ -30,11 +30,13 @@ public class BoardController {
             messages = messageService.getAllMessagesWithOffset(intOffset);
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
+            model.addAttribute("offset", intOffset);
             return "board";
         } catch (NoMessageFoundException e) {
             messages = new ArrayList<>();
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
+            model.addAttribute("offset", intOffset);
             return "board";
         }
     }
