@@ -29,12 +29,14 @@ public class BoardController {
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
             model.addAttribute("offset", intOffset);
+            model.addAttribute("loggedIn", false);
             return "board";
         } catch (NoMessageFoundException e) {
             messages = new ArrayList<>();
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
             model.addAttribute("offset", intOffset);
+            model.addAttribute("loggedIn", false);
             return "board";
         }
     }
