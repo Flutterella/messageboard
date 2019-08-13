@@ -1,21 +1,10 @@
 package be.intecbrussel.messageboard.model;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 public class UserDto {
-    @NotNull
-    @NotEmpty
-    private String userName;
 
-    @NotNull
-    @NotEmpty
+    private String userName;
     private String password;
     private String matchingPassword;
-
-    @NotNull
-    @NotEmpty
-    private String email;
 
     public String getUserName() {
         return userName;
@@ -41,15 +30,6 @@ public class UserDto {
 
     public UserDto setMatchingPassword(String matchingPassword) {
         this.matchingPassword = matchingPassword;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserDto setEmail(String email) {
-        this.email = email;
         return this;
     }
 }
