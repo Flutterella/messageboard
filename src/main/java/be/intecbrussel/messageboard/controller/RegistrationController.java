@@ -25,6 +25,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("user") UserDto user, Model model){
+        if(!user.getPassword().equals(user.getMatchingPassword())){
+            return "mismatchedPasswords";
+        }
         try {
             userService.registerUser(user);
         } catch (DuplicateUserException e) {
