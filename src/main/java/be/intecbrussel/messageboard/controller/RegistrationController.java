@@ -1,6 +1,5 @@
 package be.intecbrussel.messageboard.controller;
 
-import be.intecbrussel.messageboard.model.UserDto;
 import be.intecbrussel.messageboard.service.DuplicateUserException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package be.intecbrussel.messageboard.controller;
 
-public class MessageForm {
+public class MessageDto {
 
     private String content;
 
@@ -8,7 +8,7 @@ public class MessageForm {
         return content;
     }
 
-    public MessageForm setContent(String content) {
+    public MessageDto setContent(String content) {
         this.content = content;
         return this;
     }

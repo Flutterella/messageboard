@@ -1,7 +1,5 @@
 package be.intecbrussel.messageboard.controller;
 
-import be.intecbrussel.messageboard.model.UserDto;
-import be.intecbrussel.messageboard.service.DuplicateUserException;
 import be.intecbrussel.messageboard.service.InvalidLoginException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -30,11 +27,10 @@ public class LoginController {
     @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") UserDto user, Model model,
                             HttpSession session){
-        boolean result = false;
         try{
-            result = userService.loginUser(user);
+            userService.loginUser(user);
             session.setAttribute("loggedIn", true);
-            session.setAttribute("user", user.getUserName());
+            session.setAttribute("userName", user.getUserName());
         }
         catch(InvalidLoginException e){
             return "invalidLogin";

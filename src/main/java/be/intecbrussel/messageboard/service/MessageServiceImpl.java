@@ -1,6 +1,6 @@
 package be.intecbrussel.messageboard.service;
 
-import be.intecbrussel.messageboard.controller.MessageForm;
+import be.intecbrussel.messageboard.controller.MessageDto;
 import be.intecbrussel.messageboard.model.Message;
 import be.intecbrussel.messageboard.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +49,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void addMessage(MessageForm messageForm, String author) {
+    public void addMessage(MessageDto messageDto, String author) {
         Message message = new Message();
         message.setAuthor(author);
-        message.setContent(messageForm.getContent());
+        message.setContent(messageDto.getContent());
         message.setDate(LocalDateTime.now());
         messageRepository.save(message);
     }

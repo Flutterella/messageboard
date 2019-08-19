@@ -1,4 +1,4 @@
-package be.intecbrussel.messageboard.model;
+package be.intecbrussel.messageboard.controller;
 
 public class UserDto {
 

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class BoardController {
         try {
             messages = messageService.getAllMessagesWithOffset(intOffset);
             model.addAttribute("messages", messages);
-            model.addAttribute("messageForm", new MessageForm());
+            model.addAttribute("messageDto", new MessageDto());
             model.addAttribute("offset", intOffset);
             if(loggedIn != null){
                 model.addAttribute("loggedIn", loggedIn);
@@ -43,7 +42,7 @@ public class BoardController {
         } catch (NoMessageFoundException e) {
             messages = new ArrayList<>();
             model.addAttribute("messages", messages);
-            model.addAttribute("messageForm", new MessageForm());
+            model.addAttribute("messageDto", new MessageDto());
             model.addAttribute("offset", intOffset);
             if(loggedIn != null){
                 model.addAttribute("loggedIn", loggedIn);
@@ -56,10 +55,10 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public String board(@ModelAttribute("messageForm") MessageForm messageForm, Model model,
+    public String board(@ModelAttribute("messageDto") MessageDto messageDto, Model model,
                         HttpSession session){
-        String author = ((String)session.getAttribute("user"));
-        messageService.addMessage(messageForm, author);
+        String author = ((String)session.getAttribute("userName"));
+        messageService.addMessage(messageDto, author);
         return "redirect:board";
     }
 }
