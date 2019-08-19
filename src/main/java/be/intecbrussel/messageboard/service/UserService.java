@@ -6,5 +6,5 @@ public interface UserService {
 
     public void registerUser(UserDto UserDto) throws DuplicateUserException;
 
-    public void loginUser(UserDto UserDto) throws InvalidLoginException;
+    public boolean loginUser(UserDto UserDto) throws InvalidLoginException;
 }

@@ -29,7 +29,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginUser(UserDto UserDto) throws InvalidLoginException {
-        
+    public boolean loginUser(UserDto userDto) throws InvalidLoginException {
+        List<User> users = userRepository.findUsersByUserName(userDto.getUserName());
+        if(users.size() == 0){
+            throw new InvalidLoginException();
+        }
+        else{
+            User tempUser = users.get(0);
+            //TODO: Add encryption here.
+            if(userDto.getPassword().equals(tempUser.getPassword())){
+                return true;
+            }
+            else{
+                throw new InvalidLoginException();
+            }
+        }
     }
 }

@@ -19,6 +19,9 @@
 <p th:unless="${loggedIn == true}">Not logged in.<br />
     <a th:href="@{/login}">Login</a>
 </p>
+<p th:if="${loggedIn == true}">
+    <a th:href="@{/logout}">Logout</a>
+</p>
 <p>
     <a th:href="@{/board/(offset=${offset + 10})}">Back</a>
     <a th:href="@{/board/(offset=${offset - 10})}">Forward</a>

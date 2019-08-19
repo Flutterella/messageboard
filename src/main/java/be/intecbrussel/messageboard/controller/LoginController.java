@@ -2,6 +2,7 @@ package be.intecbrussel.messageboard.controller;
 
 import be.intecbrussel.messageboard.model.UserDto;
 import be.intecbrussel.messageboard.service.DuplicateUserException;
+import be.intecbrussel.messageboard.service.InvalidLoginException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,15 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") UserDto user, Model model, HttpServletRequest request){
-        return "login";
+        boolean result = false;
+        try{
+            result = userService.loginUser(user);
+            request.getSession().setAttribute("loggedIn", true);
+            request.getSession().setAttribute("user", user.getUserName());
+        }
+        catch(InvalidLoginException e){
+            return "invalidLogin";
+        }
+        return "redirect:board";
     }
 }

@@ -16,6 +16,9 @@
         <input type="password" th:field="*{password}"/>
     </div>
     <button type="submit" th:text="#{label.form.submit}">submit</button>
+    <p>Not a user?<br />
+        <a th:href="@{/registration}">Register</a>
+    </p>
 </form>
 </body>
 </html>

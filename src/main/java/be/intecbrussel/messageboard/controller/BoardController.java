@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +22,34 @@ public class BoardController {
     MessageService messageService;
 
     @GetMapping("/board")
-    public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model) {
+    public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
+                        HttpServletRequest request) {
         List<Message> messages;
+        Boolean loggedIn = ((Boolean)request.getSession().getAttribute("loggedIn"));
         int intOffset = Integer.parseInt(offset);
         try {
             messages = messageService.getAllMessagesWithOffset(intOffset);
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
             model.addAttribute("offset", intOffset);
-            model.addAttribute("loggedIn", false);
+            if(loggedIn != null){
+                model.addAttribute("loggedIn", loggedIn);
+            }
+            else{
+                model.addAttribute("loggedIn", false);
+            }
             return "board";
         } catch (NoMessageFoundException e) {
             messages = new ArrayList<>();
             model.addAttribute("messages", messages);
             model.addAttribute("messageForm", new MessageForm());
             model.addAttribute("offset", intOffset);
-            model.addAttribute("loggedIn", false);
+            if(loggedIn != null){
+                model.addAttribute("loggedIn", loggedIn);
+            }
+            else{
+                model.addAttribute("loggedIn", false);
+            }
             return "board";
         }
     }
