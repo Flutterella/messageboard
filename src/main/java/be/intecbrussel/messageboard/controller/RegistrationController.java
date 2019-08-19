@@ -33,6 +33,6 @@ public class RegistrationController {
         } catch (DuplicateUserException e) {
             return "duplicateUser";
         }
-        return "redirect:registration";
+        return "redirect:login";
     }
 }

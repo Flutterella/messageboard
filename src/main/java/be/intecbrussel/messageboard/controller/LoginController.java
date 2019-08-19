@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -27,12 +28,13 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("user") UserDto user, Model model, HttpServletRequest request){
+    public String loginUser(@ModelAttribute("user") UserDto user, Model model,
+                            HttpSession session){
         boolean result = false;
         try{
             result = userService.loginUser(user);
-            request.getSession().setAttribute("loggedIn", true);
-            request.getSession().setAttribute("user", user.getUserName());
+            session.setAttribute("loggedIn", true);
+            session.setAttribute("user", user.getUserName());
         }
         catch(InvalidLoginException e){
             return "invalidLogin";

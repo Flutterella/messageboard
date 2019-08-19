@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class BoardController {
 
     @GetMapping("/board")
     public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
-                        HttpServletRequest request) {
+                        HttpSession session) {
         List<Message> messages;
-        Boolean loggedIn = ((Boolean)request.getSession().getAttribute("loggedIn"));
+        Boolean loggedIn = ((Boolean)session.getAttribute("loggedIn"));
         int intOffset = Integer.parseInt(offset);
         try {
             messages = messageService.getAllMessagesWithOffset(intOffset);
@@ -56,8 +57,8 @@ public class BoardController {
 
     @PostMapping("/board")
     public String board(@ModelAttribute("messageForm") MessageForm messageForm, Model model,
-                        HttpServletRequest request){
-        String author = ((String)request.getSession().getAttribute("user"));
+                        HttpSession session){
+        String author = ((String)session.getAttribute("user"));
         messageService.addMessage(messageForm, author);
         return "redirect:board";
     }

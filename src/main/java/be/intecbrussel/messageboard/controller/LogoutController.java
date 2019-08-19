@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LogoutController {
 
     @GetMapping("/logout")
-    public String logout( Model model, HttpServletRequest request) {
-        request.getSession().setAttribute("loggedIn", false);
+    public String logout( Model model, HttpSession session) {
+        session.setAttribute("loggedIn", false);
         return "logout";
     }
 }
