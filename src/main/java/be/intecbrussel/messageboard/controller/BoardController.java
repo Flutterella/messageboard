@@ -55,8 +55,10 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public String board(@ModelAttribute("messageForm") MessageForm messageForm, Model model){
-        messageService.addMessage(messageForm);
+    public String board(@ModelAttribute("messageForm") MessageForm messageForm, Model model,
+                        HttpServletRequest request){
+        String author = ((String)request.getSession().getAttribute("user"));
+        messageService.addMessage(messageForm, author);
         return "redirect:board";
     }
 }

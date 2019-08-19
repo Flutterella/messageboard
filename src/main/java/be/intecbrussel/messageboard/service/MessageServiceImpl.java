@@ -49,9 +49,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void addMessage(MessageForm messageForm) {
+    public void addMessage(MessageForm messageForm, String author) {
         Message message = new Message();
-        message.setAuthor(messageForm.getAuthor());
+        message.setAuthor(author);
         message.setContent(messageForm.getContent());
         message.setDate(LocalDateTime.now());
         messageRepository.save(message);

@@ -11,5 +11,5 @@ public interface MessageService {
 
     public List<Message> getAllMessagesWithOffset(int offset) throws NoMessageFoundException;
 
-    public void addMessage(MessageForm messageForm);
+    public void addMessage(MessageForm messageForm, String author);
 }
