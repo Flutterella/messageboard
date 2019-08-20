@@ -10,17 +10,28 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Service
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
-    MessageRepository messageRepository;
+    private MessageRepository messageRepository;
+
+    ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
     public List<Message> getAllMessages() throws NoMessageFoundException {
-        List<Message> messages = messageRepository.findAll();
-        if(messages.size() >= 1){
+        List<Message> messages;
+        try{
+            lock.readLock().lock();
+            messages = messageRepository.findAll();
+        }
+        finally{
+            lock.readLock().unlock();
+        }
+        if(messages != null && messages.size() >= 1){
             Collections.reverse(messages);
             return messages;
         }
@@ -31,9 +42,16 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getAllMessagesWithOffset(int offset) throws NoMessageFoundException {
-        List<Message> messages = messageRepository.findAll();
+        List<Message> messages;
+        try{
+            lock.readLock().lock();
+            messages = messageRepository.findAll();
+        }
+        finally{
+            lock.readLock().unlock();
+        }
         Collections.reverse(messages);
-        if(messages.size() >= 1 + offset){
+        if(messages != null && messages.size() >= 1 + offset){
             List<Message> finalMessages = new ArrayList<>();
             for(int i = offset; i < offset + 10; i++){
                 if(i >= 0 && i < messages.size()){
@@ -54,6 +72,12 @@ public class MessageServiceImpl implements MessageService {
         message.setAuthor(author);
         message.setContent(messageDto.getContent());
         message.setDate(LocalDateTime.now());
-        messageRepository.save(message);
+        try{
+            lock.writeLock().lock();
+            messageRepository.save(message);
+        }
+        finally{
+            lock.writeLock().unlock();
+        }
     }
 }

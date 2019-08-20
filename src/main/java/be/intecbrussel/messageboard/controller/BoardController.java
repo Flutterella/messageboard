@@ -19,7 +19,7 @@ import java.util.List;
 public class BoardController {
 
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
 
     @GetMapping("/board")
     public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,

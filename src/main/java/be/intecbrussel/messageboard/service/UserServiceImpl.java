@@ -7,16 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
     public void registerUser(UserDto userDto) throws DuplicateUserException {
-        List<User> users = userRepository.findUsersByUserName(userDto.getUserName());
+        List<User> users;
+        try{
+            lock.readLock().lock();
+            users = userRepository.findUsersByUserName(userDto.getUserName());
+        }
+        finally{
+            lock.readLock().unlock();
+        }
         if(users.size() > 0){
             throw new DuplicateUserException();
         }
@@ -24,13 +35,26 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setUserName(userDto.getUserName());
             user.setPassword(userDto.getPassword());
-            userRepository.save(user);
+            try{
+                lock.writeLock().lock();
+                userRepository.save(user);
+            }
+            finally{
+                lock.writeLock().unlock();
+            }
         }
     }
 
     @Override
     public void loginUser(UserDto userDto) throws InvalidLoginException {
-        List<User> users = userRepository.findUsersByUserName(userDto.getUserName());
+        List<User> users;
+        try{
+            lock.readLock().lock();
+            users = userRepository.findUsersByUserName(userDto.getUserName());
+        }
+        finally{
+            lock.readLock().unlock();
+        }
         if(users.size() == 0){
             throw new InvalidLoginException();
         }

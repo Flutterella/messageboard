@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration( Model model) {

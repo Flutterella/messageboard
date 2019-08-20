@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/login")
     public String login( Model model) {
