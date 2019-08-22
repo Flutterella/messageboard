@@ -1,5 +1,6 @@
 package be.intecbrussel.messageboard.controller;
 
+import be.intecbrussel.messageboard.service.AuthenticationException;
 import be.intecbrussel.messageboard.service.InvalidLoginException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") UserDto user, Model model,
-                            HttpSession session){
+                            HttpSession session) throws AuthenticationException {
         try{
             userService.loginUser(user);
             session.setAttribute("loggedIn", true);

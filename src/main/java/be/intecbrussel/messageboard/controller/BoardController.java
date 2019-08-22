@@ -1,6 +1,7 @@
 package be.intecbrussel.messageboard.controller;
 
 import be.intecbrussel.messageboard.model.Message;
+import be.intecbrussel.messageboard.service.AuthenticationException;
 import be.intecbrussel.messageboard.service.MessageService;
 import be.intecbrussel.messageboard.service.NoMessageFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class BoardController {
 
     @GetMapping("/board")
     public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
-                        HttpSession session) {
+                        HttpSession session){
         List<Message> messages;
         Boolean loggedIn = ((Boolean)session.getAttribute("loggedIn"));
         int intOffset = Integer.parseInt(offset);
