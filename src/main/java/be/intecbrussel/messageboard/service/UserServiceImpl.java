@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
     private AuthenticationService authenticationService;
 
     ReadWriteLock lock = new ReentrantReadWriteLock();
-    Random random = new Random();
 
     @Override
     public void registerUser(UserDto userDto) throws DuplicateUserException, AuthenticationException {
