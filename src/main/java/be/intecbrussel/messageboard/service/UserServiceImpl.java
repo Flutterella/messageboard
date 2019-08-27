@@ -25,7 +25,10 @@ public class UserServiceImpl implements UserService {
     ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
-    public void registerUser(UserDto userDto) {
+    public void registerUser(UserDto userDto) throws MismatchedPasswordsException {
+        if(!userDto.getPassword().equals(userDto.getMatchingPassword())){
+            throw new MismatchedPasswordsException();
+        }
         User tempUser;
         try{
             lock.readLock().lock();

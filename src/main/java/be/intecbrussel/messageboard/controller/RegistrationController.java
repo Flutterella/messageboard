@@ -1,5 +1,6 @@
 package be.intecbrussel.messageboard.controller;
 
+import be.intecbrussel.messageboard.service.MismatchedPasswordsException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,11 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("userDto") UserDto userDto, Model model) {
-        userService.registerUser(userDto);
+        try {
+            userService.registerUser(userDto);
+        } catch (MismatchedPasswordsException e) {
+            return "redirect:registration";
+        }
         return "redirect:login";
 
     }
