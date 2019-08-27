@@ -23,7 +23,6 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("userDto") UserDto userDto, Model model) {
-        System.out.println("In registration controller!");
         userService.registerUser(userDto);
         return "redirect:login";
 

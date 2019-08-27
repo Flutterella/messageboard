@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserDto userDto) {
-        System.out.println("In User Service!");
         User tempUser;
         try{
             lock.readLock().lock();
