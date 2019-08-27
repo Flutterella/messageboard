@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,9 @@ public class BoardController {
     private MessageService messageService;
 
     @GetMapping("/board")
-    public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model){
+    public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
+                        Principal principal){
+        model.addAttribute("username", principal.getName());
         List<Message> messages;
         int intOffset = Integer.parseInt(offset);
         try {
@@ -40,7 +43,8 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public String board(@ModelAttribute("messageDto") MessageDto messageDto){
+    public String board(@ModelAttribute("messageDto") MessageDto messageDto, Principal principal){
+        messageDto.setAuthor(principal.getName());
         messageService.addMessage(messageDto);
         return "redirect:board";
     }

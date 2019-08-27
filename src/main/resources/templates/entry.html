@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Message Board</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p>
+    <a th:href="@{/board}">Go to board</a>
+</p>
+<p>
+    <a th:href="@{/admin}">Go to admin panel</a>
+</p>
+<div th:if="${param.logout}" class="alert alert-success">
+    You have been logged out.
+</div>
+</body>
+</html>

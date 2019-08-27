@@ -1,9 +1,7 @@
 package be.intecbrussel.messageboard.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -14,6 +12,9 @@ public class User {
 
     private String username;
     private String password;
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    private Set<Role> roles;
 
     public long getId() {
         return id;
@@ -39,6 +40,15 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public User setRoles(Set<Role> roles) {
+        this.roles = roles;
         return this;
     }
 }
