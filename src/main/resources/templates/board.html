@@ -11,19 +11,17 @@
     <p th:text="'Posted on: ' + ${message.date}" />
     <br />
 </th:block>
-<form th:if="${loggedIn == true}" action="#" th:action="@{/board}" th:object="${messageDto}" method="post">
+<form action="#" th:action="@{/board}" th:object="${messageDto}" method="post">
+    <p th:text="'Logged in as: ' + ${username}" />
     <p>Message: <input type="text" th:field="*{content}" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
-<p th:unless="${loggedIn == true}">Not logged in.<br />
-    <a th:href="@{/login}">Login</a>
-</p>
-<p th:if="${loggedIn == true}">
-    <a th:href="@{/logout}">Logout</a>
-</p>
 <p>
     <a th:href="@{/board/(offset=${offset + 10})}">Back</a>
     <a th:href="@{/board/(offset=${offset - 10})}">Forward</a>
+</p>
+<p>
+    <a th:href="@{/logout}">Logout</a>
 </p>
 </body>
 </html>

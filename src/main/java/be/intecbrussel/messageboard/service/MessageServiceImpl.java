@@ -67,9 +67,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void addMessage(MessageDto messageDto, String author) {
+    public void addMessage(MessageDto messageDto) {
         Message message = new Message();
-        message.setAuthor(author);
+        message.setAuthor(messageDto.getAuthor());
         message.setContent(messageDto.getContent());
         message.setDate(LocalDateTime.now());
         try{

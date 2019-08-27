@@ -1,14 +1,15 @@
 package be.intecbrussel.messageboard.service;
 
 import be.intecbrussel.messageboard.controller.UserDto;
+import be.intecbrussel.messageboard.model.Role;
 import be.intecbrussel.messageboard.model.User;
+import be.intecbrussel.messageboard.repository.RoleRepository;
 import be.intecbrussel.messageboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -19,35 +20,29 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private RoleRepository roleRepository;
 
     ReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Override
-    public void registerUser(UserDto userDto) throws DuplicateUserException, AuthenticationException {
-        List<User> users;
+    public void registerUser(UserDto userDto) {
+        System.out.println("In User Service!");
+        User tempUser;
         try{
             lock.readLock().lock();
-            users = userRepository.findUsersByUserName(userDto.getUserName());
+            tempUser = userRepository.findByUsername(userDto.getUsername());
         }
         finally{
             lock.readLock().unlock();
         }
-        if(users.size() > 0){
-            throw new DuplicateUserException();
-        }
-        else{
+        if(tempUser == null){
             User user = new User();
-            user.setUserName(userDto.getUserName());
-
-            byte[] salt = authenticationService.generateSalt();
-            byte[] password = null;
-
-            password = authenticationService.hashPassword(userDto.getPassword(), salt);
-
-            user.setPassword(password);
-            user.setSalt(salt);
-
+            user.setUsername(userDto.getUsername());
+            user.setPassword(userDto.getPassword());
+            Role role = roleRepository.findByName("ROLE_USER");
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
             try{
                 lock.writeLock().lock();
                 userRepository.save(user);
@@ -59,27 +54,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginUser(UserDto userDto) throws InvalidLoginException, AuthenticationException {
-        List<User> users;
-        try{
-            lock.readLock().lock();
-            users = userRepository.findUsersByUserName(userDto.getUserName());
-        }
-        finally{
-            lock.readLock().unlock();
-        }
-        if(users.size() == 0){
-            throw new InvalidLoginException();
-        }
-        else{
-            User tempUser = users.get(0);
-            byte[] hashedPassword = authenticationService.hashPassword(userDto.getPassword(), tempUser.getSalt());
-            if(Arrays.equals(hashedPassword, tempUser.getPassword())){
-                return;
-            }
-            else{
-                throw new InvalidLoginException();
-            }
-        }
+    public User findUser(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername());
+        return user;
     }
 }

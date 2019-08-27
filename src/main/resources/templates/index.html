@@ -5,9 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p>No user found for given username and password!</p>
 <p>
-    <a th:href="@{/login}">Login</a>
+    <a th:href="@{/board}">Go to board</a>
 </p>
+<p>
+    <a th:href="@{/admin}">Go to admin panel</a>
+</p>
+<div th:if="${param.logout}" class="alert alert-success">
+    You have been logged out.
+</div>
 </body>
 </html>

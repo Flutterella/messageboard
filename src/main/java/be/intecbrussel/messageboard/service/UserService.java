@@ -1,10 +1,11 @@
 package be.intecbrussel.messageboard.service;
 
 import be.intecbrussel.messageboard.controller.UserDto;
+import be.intecbrussel.messageboard.model.User;
 
 public interface UserService {
 
-    public void registerUser(UserDto UserDto) throws DuplicateUserException, AuthenticationException;
+    public void registerUser(UserDto userDto);
 
-    public void loginUser(UserDto UserDto) throws InvalidLoginException, AuthenticationException;
+    public User findUser(UserDto userDto);
 }

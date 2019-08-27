@@ -1,6 +1,7 @@
 package be.intecbrussel.messageboard.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -9,13 +10,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String userName;
+    private String username;
+    private String password;
 
-    @Lob
-    private byte[] password;
-
-    @Lob
-    private byte[] salt;
+    @ManyToMany(fetch=FetchType.EAGER)
+    private Set<Role> roles;
 
     public long getId() {
         return id;
@@ -26,30 +25,30 @@ public class User {
         return this;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public User setUserName(String userName) {
-        this.userName = userName;
+    public User setUsername(String username) {
+        this.username = username;
         return this;
     }
 
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public User setPassword(byte[] password) {
+    public User setPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public byte[] getSalt() {
-        return salt;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public User setSalt(byte[] salt) {
-        this.salt = salt;
+    public User setRoles(Set<Role> roles) {
+        this.roles = roles;
         return this;
     }
 }

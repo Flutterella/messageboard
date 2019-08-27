@@ -2,16 +2,16 @@ package be.intecbrussel.messageboard.controller;
 
 public class UserDto {
 
-    private String userName;
+    private String username;
     private String password;
     private String matchingPassword;
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public UserDto setUserName(String userName) {
-        this.userName = userName;
+    public UserDto setUsername(String username) {
+        this.username = username;
         return this;
     }
 

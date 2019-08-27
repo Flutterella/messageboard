@@ -1,7 +1,5 @@
 package be.intecbrussel.messageboard.controller;
 
-import be.intecbrussel.messageboard.service.AuthenticationException;
-import be.intecbrussel.messageboard.service.DuplicateUserException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,21 +16,16 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration( Model model) {
-        UserDto user = new UserDto();
-        model.addAttribute(user);
+        UserDto userDto = new UserDto();
+        model.addAttribute("userDto", userDto);
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") UserDto user, Model model) throws AuthenticationException {
-        if(!user.getPassword().equals(user.getMatchingPassword())){
-            return "mismatchedPasswords";
-        }
-        try {
-            userService.registerUser(user);
-        } catch (DuplicateUserException e) {
-            return "duplicateUser";
-        }
+    public String registerUser(@ModelAttribute("userDto") UserDto userDto, Model model) {
+        System.out.println("In registration controller!");
+        userService.registerUser(userDto);
         return "redirect:login";
+
     }
 }
