@@ -1,4 +1,4 @@
-package be.intecbrussel.messageboard.service;
+package be.intecbrussel.messageboard.security;
 
 import be.intecbrussel.messageboard.model.Role;
 import be.intecbrussel.messageboard.model.User;

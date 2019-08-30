@@ -1,4 +1,4 @@
-package be.intecbrussel.messageboard.configuration;
+package be.intecbrussel.messageboard.security;
 
 import be.intecbrussel.messageboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
-@ComponentScan(basePackages = "be.intecbrussel.messageboard.service")
+@ComponentScan(basePackages = "be.intecbrussel.messageboard")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -46,10 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .failureUrl("/login-error")
-                    .successForwardUrl("/board")
+                    .defaultSuccessUrl("/board")
                 .and()
                 .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/board?logout")
                     .permitAll();
     }
