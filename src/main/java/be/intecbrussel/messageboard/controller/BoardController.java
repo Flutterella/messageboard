@@ -24,7 +24,9 @@ public class BoardController {
     @GetMapping("/board")
     public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
                         Principal principal){
-        model.addAttribute("username", principal.getName());
+        if(principal != null){
+            model.addAttribute("username", principal.getName());
+        }
         List<Message> messages;
         int intOffset = Integer.parseInt(offset);
         try {

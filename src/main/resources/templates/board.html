@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Message Board</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -11,17 +11,25 @@
     <p th:text="'Posted on: ' + ${message.date}" />
     <br />
 </th:block>
-<form action="#" th:action="@{/board}" th:object="${messageDto}" method="post">
-    <p th:text="'Logged in as: ' + ${username}" />
-    <p>Message: <input type="text" th:field="*{content}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-</form>
-<p>
-    <a th:href="@{/board/(offset=${offset + 10})}">Back</a>
-    <a th:href="@{/board/(offset=${offset - 10})}">Forward</a>
-</p>
-<p>
-    <a th:href="@{/logout}">Logout</a>
-</p>
+<div sec:authorize="isAuthenticated()">
+    <form action="#" th:action="@{/board}" th:object="${messageDto}" method="post">
+        <p th:text="'Logged in as: ' + ${username}" />
+        <p>Message: <input type="text" th:field="*{content}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+    <p>
+        <a th:href="@{/board/(offset=${offset + 10})}">Back</a>
+        <a th:href="@{/board/(offset=${offset - 10})}">Forward</a>
+    </p>
+    <p>
+        <a th:href="@{/logout}">Logout</a>
+    </p>
+</div>
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}">Login</a>
+</div>
+<div th:if="${param.logout}">
+    You have been successfully logged out.
+</div>
 </body>
 </html>

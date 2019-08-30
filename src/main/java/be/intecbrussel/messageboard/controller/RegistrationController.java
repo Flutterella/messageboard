@@ -1,5 +1,6 @@
 package be.intecbrussel.messageboard.controller;
 
+import be.intecbrussel.messageboard.service.DuplicateUserException;
 import be.intecbrussel.messageboard.service.MismatchedPasswordsException;
 import be.intecbrussel.messageboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,10 @@ public class RegistrationController {
         try {
             userService.registerUser(userDto);
         } catch (MismatchedPasswordsException e) {
-            return "redirect:registration";
+            return "mismatchedPasswords";
+        }
+        catch (DuplicateUserException e){
+            return "duplicateUser.html";
         }
         return "redirect:login";
 
