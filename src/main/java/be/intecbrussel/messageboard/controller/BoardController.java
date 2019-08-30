@@ -1,6 +1,10 @@
 package be.intecbrussel.messageboard.controller;
 
 import be.intecbrussel.messageboard.model.Message;
+import be.intecbrussel.messageboard.model.Role;
+import be.intecbrussel.messageboard.model.User;
+import be.intecbrussel.messageboard.repository.RoleRepository;
+import be.intecbrussel.messageboard.repository.UserRepository;
 import be.intecbrussel.messageboard.service.MessageService;
 import be.intecbrussel.messageboard.service.NoMessageFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +17,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class BoardController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @GetMapping("/")
+    public String entry(){
+        User tempUser = userRepository.findByUsername("admin");
+        if(tempUser == null){
+            //If the admin user does not exist yet, make a new one.
+            User admin = new User().setUsername("admin").setPassword("admin");
+            Set<Role> roles = new HashSet<>();
+            Role roleUser = roleRepository.findByName("ROLE_USER");
+            Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");
+            roles.add(roleUser);
+            roles.add(roleAdmin);
+            admin.setRoles(roles);
+            userRepository.save(admin);
+        }
+        return "index";
+    }
 
     @GetMapping("/board")
     public String board(@RequestParam(value="offset", required=false, defaultValue="0") String offset, Model model,
