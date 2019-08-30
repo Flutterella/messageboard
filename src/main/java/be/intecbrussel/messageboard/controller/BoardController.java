@@ -8,6 +8,7 @@ import be.intecbrussel.messageboard.repository.UserRepository;
 import be.intecbrussel.messageboard.service.MessageService;
 import be.intecbrussel.messageboard.service.NoMessageFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +34,17 @@ public class BoardController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @GetMapping("/")
     public String entry(){
         User tempUser = userRepository.findByUsername("admin");
         if(tempUser == null){
             //If the admin user does not exist yet, make a new one.
-            User admin = new User().setUsername("admin").setPassword("admin");
+            User admin = new User()
+                    .setUsername("admin")
+                    .setPassword(passwordEncoder.encode("admin"));
             Set<Role> roles = new HashSet<>();
             Role roleUser = roleRepository.findByName("ROLE_USER");
             Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");

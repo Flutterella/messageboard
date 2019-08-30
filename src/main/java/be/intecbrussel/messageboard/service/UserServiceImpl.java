@@ -6,6 +6,7 @@ import be.intecbrussel.messageboard.model.User;
 import be.intecbrussel.messageboard.repository.RoleRepository;
 import be.intecbrussel.messageboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,10 +18,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService {
         if(tempUser == null){
             User user = new User();
             user.setUsername(userDto.getUsername());
-            user.setPassword(userDto.getPassword());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             Role role = roleRepository.findByName("ROLE_USER");
             Set<Role> roles = new HashSet<>();
             roles.add(role);
